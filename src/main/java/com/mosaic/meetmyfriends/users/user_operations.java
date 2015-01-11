@@ -99,10 +99,11 @@ public class user_operations {
     	users user = null;
         try{
         	tx = session.beginTransaction();
-        	Query query = session.createQuery("update users set email = \":new_value\" where username = \":uname\"");
+        	//TO-DO: figure out why setParameter does not work
+        	Query query = session.createQuery("update users set "+param+"='"+new_value+"' where username='"+uname+"'");
         	//query.setParameter("param", param);
-        	query.setParameter("new_value", new_value);
-        	query.setParameter("uname", uname);
+        	//query.setParameter("new_value", new_value);
+        	//query.setParameter("uname", uname);
         	status = query.executeUpdate();
         	tx.commit();
         	message = "Success";

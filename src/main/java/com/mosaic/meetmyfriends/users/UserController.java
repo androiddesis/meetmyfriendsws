@@ -38,7 +38,7 @@ public class UserController {
     		return search.search_user(uname);
     	}
     
-    @RequestMapping(method=RequestMethod.GET, value="/users/{username}/{param}/{new_value}")
+    @RequestMapping(method=RequestMethod.POST, value="/users/{username}/{param}/{new_value}")
     public @ResponseBody user_operations modify(@PathVariable("username") String uname,
     		@PathVariable("param") String param,
     		@PathVariable("new_value") String new_value) {
