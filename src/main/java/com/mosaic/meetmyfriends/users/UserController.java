@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping()
 public class UserController {
-    @RequestMapping(method=RequestMethod.PUT, value="/users/{username}/{password}/{firstname}/{lastname}/{email}/{country}/{phone}")
+    @RequestMapping(method=RequestMethod.GET, value="/users/{username}/{password}/{firstname}/{lastname}/{email}/{country}/{phone}")
     public @ResponseBody user_operations create(@PathVariable("username") String uname,
     		@PathVariable("password") String pass,
     		@PathVariable("firstname") String fname,

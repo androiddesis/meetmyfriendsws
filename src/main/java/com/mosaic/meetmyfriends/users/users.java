@@ -38,7 +38,7 @@ public class users {
     }
     
     public void setcountry(String country) {
-        this.firstname = country;
+        this.country = country;
     }
     
     public String getusername() {
