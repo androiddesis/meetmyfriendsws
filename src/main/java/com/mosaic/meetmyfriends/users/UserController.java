@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping()
 public class UserController {
-    @RequestMapping(method=RequestMethod.PUT, value="/users/{username}/{password}/{firstname}/{lastname}/{email}/{country}/{phone}")
+    @RequestMapping(method=RequestMethod.POST, value="/users/{username}/{password}/{firstname}/{lastname}/{email}/{country}/{phone}")
     public @ResponseBody user_operations create(@PathVariable("username") String uname,
     		@PathVariable("password") String pass,
     		@PathVariable("firstname") String fname,
@@ -38,7 +38,7 @@ public class UserController {
     		return search.search_user(uname);
     	}
     
-    @RequestMapping(method=RequestMethod.POST, value="/users/{username}/{param}/{new_value}")
+    @RequestMapping(method=RequestMethod.PUT, value="/users/{username}/{param}/{new_value}")
     public @ResponseBody user_operations modify(@PathVariable("username") String uname,
     		@PathVariable("param") String param,
     		@PathVariable("new_value") String new_value) {
