@@ -32,6 +32,7 @@
         <!-- ############################################ -->
  
         <mapping resource="com/mosaic/meetmyfriends/users/users.hbm.xml" />
+        <mapping resource="com/mosaic/meetmyfriends/events/event.hbm.xml" />
  
     </session-factory>
 </hibernate-configuration>

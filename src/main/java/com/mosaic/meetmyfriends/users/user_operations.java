@@ -1,42 +1,38 @@
 package com.mosaic.meetmyfriends.users;
 
-import java.util.List;
-
+import org.springframework.http.HttpStatus;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction; 
 import org.hibernate.Query;
  
 public class user_operations {
- 
-	public int status=404;
+	public HttpStatus status = HttpStatus.I_AM_A_TEAPOT;
 	public String message="";
 	
-    public void create_user(String uname, String pass, String fname, String lname, String email, String country, String phone) {
-        users user = new users();
-        
-        user.setusername(uname);
-        user.setpassword(pass);
-        user.setfirstname(fname);
-        user.setlastname(lname);
-        user.setemail(email);
-        user.setcountry(country);
-        user.setphone(phone);
-        
+    public void create_user(users user) { 
         Transaction tx = null;
-    	Session session = SessionFactoryUtil.getSessionFactory().openSession();
+    	SessionFactory sessionfactory = SessionFactoryUtil.getSessionFactory();
+    	if(sessionfactory == null){
+    		message = "Connection Error";
+    		status = HttpStatus.NOT_FOUND;
+    		return;
+    	}
+    			
+    	Session session = sessionfactory.openSession();
         try{
         	tx = session.beginTransaction();
         	session.save(user);
         	tx.commit();
         	message = "Success";
-        	status = 200;
+        	status = HttpStatus.OK;
         }
         catch(Exception e){
+        	message = e.getCause().getMessage();
+        	status = HttpStatus.BAD_REQUEST;	
         	if(tx != null){
-        		tx.rollback();
-        	}
-        	message = e.getMessage();
-        	status = 400;
+         		tx.rollback();
+         	}  
         }
         finally{
         	session.close();
@@ -54,14 +50,14 @@ public class user_operations {
         	session.delete(user);
         	tx.commit();
         	message = "Success";
-        	status = 200;
+        	status = HttpStatus.OK;
         }
         catch(Exception e){
         	if(tx != null){
         		tx.rollback();
         	}
         	message = e.getMessage();
-        	status = 400;
+        	status = HttpStatus.BAD_REQUEST;
         }
         finally{
         	session.close();
@@ -78,14 +74,14 @@ public class user_operations {
                     .setParameter("uname", uname).list().get(0);
         	tx.commit();
         	message = "Success";
-        	status = 200;
+        	status = HttpStatus.OK;
         }
         catch(Exception e){
         	if(tx != null){
         		tx.rollback();
         	}
-        	message = e.getMessage();
-        	status = 400;
+        	message = e.getCause().getMessage();
+        	status = HttpStatus.BAD_REQUEST;
         }
         finally{
         	session.close();
@@ -104,7 +100,8 @@ public class user_operations {
         	//query.setParameter("param", param);
         	//query.setParameter("new_value", new_value);
         	//query.setParameter("uname", uname);
-        	status = query.executeUpdate();
+        	query.executeUpdate();
+        	status = HttpStatus.OK;
         	tx.commit();
         	message = "Success";
         }
@@ -112,8 +109,8 @@ public class user_operations {
         	if(tx != null){
         		tx.rollback();
         	}
-        	message = e.getMessage();
-        	status = 400;
+        	message = e.getCause().getMessage();
+        	status = HttpStatus.BAD_REQUEST;
         }
         finally{
         	session.close();

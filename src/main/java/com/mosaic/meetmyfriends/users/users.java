@@ -1,5 +1,7 @@
 package com.mosaic.meetmyfriends.users;
 
+import com.google.gson.Gson;
+
 public class users {
 	private String username="";
     private String password="";
@@ -38,7 +40,7 @@ public class users {
     }
     
     public void setcountry(String country) {
-        this.firstname = country;
+        this.country = country;
     }
     
     public String getusername() {
@@ -67,6 +69,13 @@ public class users {
     
     public String getphone() {
         return phone;
+    }
+    
+    @Override
+	public String toString() {
+    	Gson gson = new Gson();
+    	String json = gson.toJson(this);
+    	return json;
     }
 
 }
