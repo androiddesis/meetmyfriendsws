@@ -1,25 +1,37 @@
-package com.mosaic.meetmyfriends.users;
+package com.mosaic.meetmyfriends.model;
 
-import org.springframework.http.HttpStatus;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction; 
-import org.hibernate.Query;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+
+import com.mosaic.meetmyfriends.entities.Users;
+//import com.mosaic.meetmyfriends.users.SessionFactoryUtil;
  
-public class user_operations {
+@Component
+public class UserModel {
 	public HttpStatus status = HttpStatus.I_AM_A_TEAPOT;
 	public String message="";
+
+    private static SessionFactory sessionFactory;
 	
-    public void create_user(users user) { 
+	@Autowired
+	public UserModel(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+    public void createUser(Users user) { 
         Transaction tx = null;
-    	SessionFactory sessionfactory = SessionFactoryUtil.getSessionFactory();
-    	if(sessionfactory == null){
+    	//SessionFactory sessionfactory = SessionFactoryUtil.getSessionFactory();
+    	if(sessionFactory == null){
     		message = "Connection Error";
     		status = HttpStatus.NOT_FOUND;
     		return;
     	}
     			
-    	Session session = sessionfactory.openSession();
+    	Session session = sessionFactory.openSession();
         try{
         	tx = session.beginTransaction();
         	session.save(user);
@@ -40,12 +52,12 @@ public class user_operations {
     }
 
     
-    public void delete_user(String uname) {
+    public void deleteUser(String uname) {
         Transaction tx = null;
-    	Session session = SessionFactoryUtil.getSessionFactory().openSession();
+    	Session session = sessionFactory.openSession();
         try{
         	tx = session.beginTransaction();
-        	users user = new users();
+        	Users user = new Users();
         	user.setusername(uname);
         	session.delete(user);
         	tx.commit();
@@ -64,13 +76,13 @@ public class user_operations {
         }
     }
     
-    public users search_user(String uname){
+    public Users searchUser(String uname){
     	Transaction tx = null;
-    	Session session = SessionFactoryUtil.getSessionFactory().openSession();
-    	users user = null;
+    	Session session = sessionFactory.openSession();
+    	Users user = null;
         try{
         	tx = session.beginTransaction();
-        	user = (users) session.createQuery("from users where username = :uname")
+        	user = (Users) session.createQuery("from Users where username = :uname")
                     .setParameter("uname", uname).list().get(0);
         	tx.commit();
         	message = "Success";
@@ -89,10 +101,10 @@ public class user_operations {
         return user;
     }
     
-    public users modify_user(String uname, String param, String new_value){
+    public Users modifyUser(String uname, String param, String new_value){
     	Transaction tx = null;
-    	Session session = SessionFactoryUtil.getSessionFactory().openSession();
-    	users user = null;
+    	Session session = sessionFactory.openSession();
+    	Users user = null;
         try{
         	tx = session.beginTransaction();
         	//TO-DO: figure out why setParameter does not work

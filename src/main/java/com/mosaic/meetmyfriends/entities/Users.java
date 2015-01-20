@@ -1,17 +1,49 @@
-package com.mosaic.meetmyfriends.users;
+package com.mosaic.meetmyfriends.entities;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.google.gson.Gson;
-
-public class users {
+@Entity
+@Table(name = "user", schema = "meetfriends")
+public class Users {
+	@Id
+	@GeneratedValue
+	@Column(name="userid")
+	private int userId;
+	 @Column(name="username")
 	private String username="";
+	 @Column(name="password")
     private String password="";
+	 @Column(name="firstname")
     private String firstname="";
+	 @Column(name="lastname")
     private String lastname="";
+	 @Column(name="email")
     private String email="";
+	 @Column(name="country")
     private String country="";
+	 @Column(name="phone")
     private String phone="";
-    
-    public users() {
+//    @ManyToMany(mappedBy="users")
+//    private Set<EventDto> events = new HashSet<EventDto>();
+//    
+//    public Set<EventDto> getEvents() {
+//		return events;
+//	}
+//
+//	public void setEvents(Set<EventDto> events) {
+//	this.events = events;
+//	}
+
+	public Users() {
     	//do nothing
     }
 
